@@ -24,10 +24,10 @@ export default function Sidebar({ theme, onToggleTheme, onAddJob }) {
           <BarChart3 size={17} />
           <span>Statistics</span>
         </NavLink>
-        <span className="sidebar-link sidebar-link-disabled" title="Coming soon">
+        <NavLink to="/settings" className="sidebar-link">
           <Settings size={17} />
           <span>Settings</span>
-        </span>
+        </NavLink>
       </nav>
 
       <button className="sidebar-theme" onClick={onToggleTheme}>
