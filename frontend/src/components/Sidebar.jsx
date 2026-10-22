@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { LayoutGrid, BarChart3, Settings, Moon, Sun, Briefcase } from "lucide-react";
+import { LayoutGrid, BarChart3, Settings, Moon, Sun, Briefcase, LogOut } from "lucide-react";
 
-export default function Sidebar({ theme, onToggleTheme, onAddJob }) {
+export default function Sidebar({ theme, onToggleTheme, onAddJob, user, onLogout }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
@@ -30,10 +30,24 @@ export default function Sidebar({ theme, onToggleTheme, onAddJob }) {
         </NavLink>
       </nav>
 
-      <button className="sidebar-theme" onClick={onToggleTheme}>
-        {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-        <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
-      </button>
+      <div className="sidebar-footer">
+        <button className="sidebar-theme" onClick={onToggleTheme}>
+          {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          <span>{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+        </button>
+
+        {user && (
+          <div className="sidebar-user">
+            <span className="sidebar-user-email" title={user.email}>
+              {user.email}
+            </span>
+            <button className="sidebar-theme" onClick={onLogout}>
+              <LogOut size={16} />
+              <span>Log out</span>
+            </button>
+          </div>
+        )}
+      </div>
     </aside>
   );
 }
