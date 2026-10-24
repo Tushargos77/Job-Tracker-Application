@@ -1,0 +1,45 @@
+# Runs the whole app locally: PostgreSQL + API + web app.
+#
+#   cp .env.example .env      # then set SECRET_KEY
+#   docker compose up --build
+#
+# Web app: http://localhost:8080    API docs: http://localhost:8000/docs
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jobtracker
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d jobtracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/jobtracker
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in a .env file (see .env.example)}
+      ALLOWED_ORIGINS: http://localhost:8080
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
