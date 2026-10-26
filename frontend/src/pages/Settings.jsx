@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { jobsApi } from "../api/client";
+import { useNavigate } from "react-router-dom";
+import { jobsApi, authApi } from "../api/client";
 import { useToast } from "../context/ToastContext";
+import { useAuth } from "../context/AuthContext";
 import { ALL_STATUSES } from "../constants/status";
 import ConfirmDialog from "../components/ConfirmDialog";
 
@@ -8,12 +10,16 @@ const VALID_STATUS_KEYS = ALL_STATUSES.map((s) => s.key);
 
 export default function Settings({ theme, onToggleTheme }) {
   const toast = useToast();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [confirmClearOpen, setConfirmClearOpen] = useState(false);
   const [clearing, setClearing] = useState(false);
   const [importing, setImporting] = useState(false);
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [savingPhone, setSavingPhone] = useState(false);
 
   const loadJobs = () => {
     setLoading(true);
@@ -27,6 +33,10 @@ export default function Settings({ theme, onToggleTheme }) {
   useEffect(() => {
     loadJobs();
   }, []);
+
+  useEffect(() => {
+    setPhone(user?.phone || "");
+  }, [user?.phone]);
 
   const downloadBlob = (content, filename, type) => {
     const blob = new Blob([content], { type });
@@ -198,6 +208,24 @@ export default function Settings({ theme, onToggleTheme }) {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out.");
+    navigate("/login");
+  };
+
+  const handleSavePhone = async () => {
+    setSavingPhone(true);
+    try {
+      await authApi.updatePhone(phone.trim() || null);
+      toast.success("Phone number saved.");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setSavingPhone(false);
+    }
+  };
+
   return (
     <div className="page">
       <div className="page-header">
@@ -216,6 +244,25 @@ export default function Settings({ theme, onToggleTheme }) {
           </div>
           <button className="btn-secondary" onClick={onToggleTheme}>
             Switch to {theme === "dark" ? "light" : "dark"} mode
+          </button>
+        </div>
+      </div>
+
+      <div className="stats-panel">
+        <h3>Reminders</h3>
+        <p className="page-subtitle">
+          Add your WhatsApp number to get interview reminders there, in addition to email.
+        </p>
+        <div className="settings-row">
+          <input
+            type="tel"
+            placeholder="+1 555 123 4567"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="settings-phone-input"
+          />
+          <button className="btn-secondary" onClick={handleSavePhone} disabled={savingPhone}>
+            {savingPhone ? "Saving…" : "Save number"}
           </button>
         </div>
       </div>
@@ -271,6 +318,19 @@ export default function Settings({ theme, onToggleTheme }) {
             disabled={loading || jobs.length === 0}
           >
             Clear all
+          </button>
+        </div>
+      </div>
+
+      <div className="stats-panel">
+        <h3>Account</h3>
+        <div className="settings-row">
+          <div>
+            <p className="settings-row-title">Signed in as</p>
+            <p className="page-subtitle">{user?.email}</p>
+          </div>
+          <button className="btn-secondary" onClick={handleLogout}>
+            log out
           </button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://job-tracker-application-1-gy8p.onrender.com";
+const baseURL = import.meta.env.VITE_API_URL;
 
 export const api = axios.create({
   baseURL,
@@ -9,7 +9,7 @@ export const api = axios.create({
   },
 });
 
-// Attach the auth token to every outgoing request, if we have one
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -18,7 +18,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Normalize API errors
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -67,6 +67,25 @@ export const authApi = {
   },
   me: async () => {
     const response = await api.get("/auth/me");
+    return response.data;
+  },
+  forgotPassword: async (email) => {
+    const response = await api.post("/auth/forgot-password", { email });
+    return response.data;
+  },
+  resetPassword: async (token, newPassword) => {
+    const response = await api.post("/auth/reset-password", {
+      token,
+      new_password: newPassword,
+    });
+    return response.data;
+  },
+  googleLogin: async (credential) => {
+    const response = await api.post("/auth/google", { credential });
+    return response.data;
+  },
+  updatePhone: async (phone) => {
+    const response = await api.put("/auth/me/phone", { phone });
     return response.data;
   },
 };

@@ -44,3 +44,20 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
+.settings-phone-input {
+  flex: 1;
+  max-width: 280px;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.settings-phone-input:focus {
+  outline: none;
+  border-color: var(--pine);
+  background: var(--surface);
+}

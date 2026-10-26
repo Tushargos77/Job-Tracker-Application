@@ -4,9 +4,13 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Stats from "./pages/Stats";
 import Settings from "./pages/Settings";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 import "./App.css";
 
-function App() {
+function AppShell() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const navigate = useNavigate();
 
@@ -23,12 +27,45 @@ function App() {
       <Sidebar theme={theme} onToggleTheme={toggleTheme} onAddJob={goAddJob} />
       <main className="app-main">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/stats" element={<Stats />} />
-          <Route path="/settings" element={<Settings theme={theme} onToggleTheme={toggleTheme} />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/stats"
+            element={
+              <ProtectedRoute>
+                <Stats />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings theme={theme} onToggleTheme={toggleTheme} />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/*" element={<AppShell />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

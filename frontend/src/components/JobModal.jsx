@@ -2,7 +2,17 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { ALL_STATUSES } from "../constants/status";
 
-const EMPTY = { company: "", role: "", status: "Applied" };
+const EMPTY = { company: "", role: "", status: "Applied", interview_at: "" };
+
+// Convert an ISO datetime string (from the backend) into the
+// "YYYY-MM-DDTHH:mm" format a <input type="datetime-local"> expects.
+const toLocalInputValue = (isoString) => {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return "";
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
 
 export default function JobModal({ open, initial, onClose, onSubmit, busy }) {
   const [form, setForm] = useState(EMPTY);
@@ -10,7 +20,16 @@ export default function JobModal({ open, initial, onClose, onSubmit, busy }) {
 
   useEffect(() => {
     if (open) {
-      setForm(initial ? { company: initial.company, role: initial.role, status: initial.status } : EMPTY);
+      setForm(
+        initial
+          ? {
+              company: initial.company,
+              role: initial.role,
+              status: initial.status,
+              interview_at: toLocalInputValue(initial.interview_at),
+            }
+          : EMPTY
+      );
       setErrors({});
     }
   }, [open, initial]);
@@ -30,7 +49,14 @@ export default function JobModal({ open, initial, onClose, onSubmit, busy }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    onSubmit({ company: form.company.trim(), role: form.role.trim(), status: form.status });
+    onSubmit({
+      company: form.company.trim(),
+      role: form.role.trim(),
+      status: form.status,
+      // datetime-local gives "2026-08-20T14:30" with no timezone — treat it
+      // as the browser's local time and convert to a full ISO string.
+      interview_at: form.interview_at ? new Date(form.interview_at).toISOString() : null,
+    });
   };
 
   return (
@@ -87,6 +113,15 @@ export default function JobModal({ open, initial, onClose, onSubmit, busy }) {
                 </option>
               ))}
             </select>
+          </label>
+
+          <label className="field">
+            <span>Interview date &amp; time (optional)</span>
+            <input
+              type="datetime-local"
+              value={form.interview_at}
+              onChange={(e) => setForm({ ...form, interview_at: e.target.value })}
+            />
           </label>
 
           <div className="modal-actions">

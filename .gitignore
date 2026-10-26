@@ -1,8 +1,13 @@
 # Python
 backend/venv/
 backend/__pycache__/
-backend/.env
+__pycache__/
 *.db
+
+# Environment files (never commit secrets)
+.env
+backend/.env
+frontend/.env
 
 # Node
 frontend/node_modules/
