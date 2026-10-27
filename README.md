@@ -1,5 +1,4 @@
-# Job-Tracker-Application
-# Job Tracker
+# Job Tracker Application
 
 A full-stack web application for tracking job applications from first apply to final offer, with email reminders before interviews.
 
@@ -17,11 +16,11 @@ A full-stack web application for tracking job applications from first apply to f
 
 | Login | Dashboard |
 | --- | --- |
-| ![Login with 3D voxel scene](docs/login.png) | ![Dashboard with application cards](docs/dashboard.png) |
+| ![Login with 3D voxel scene](login.png) | ![Dashboard with application cards](dashboard.png) |
 
 | Statistics | Settings |
 | --- | --- |
-| ![Statistics by status and company](docs/statistics.png) | ![Settings with export and import](docs/settings.png) |
+| ![Statistics by status and company](statistics.png) | ![Settings with export and import](settings.png) |
 
 ## Features
 
@@ -120,6 +119,6 @@ Frontend on Vercel, backend on Render, database on Neon. Set the environment var
 
 ## Author
 
-**Tushar Goswami**, B.Tech Electronics and Communication Engineering
+**Tushar Prasad Goswami**, B.Tech Electronics and Communication Engineering
 
 [GitHub](https://github.com/Tushargos77) · [LinkedIn](https://www.linkedin.com/in/tushar-goswami-164334278)
