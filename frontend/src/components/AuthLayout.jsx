@@ -8,26 +8,28 @@ const POINTS = [
   "Never lose track of a follow-up",
 ];
 
-const desktopSlot = { background: "none", padding: 0, display: "block" };
-const mobileSlot = {
-  position: "relative",
-  display: "block",
-  padding: "24px 20px",
-  minHeight: 200,
-  background: "linear-gradient(135deg, #2f9e7a, #a8a46a)",
-  color: "#fff",
-};
+const visualSlotStyle = { background: "none", padding: 0, display: "block" };
 
-function useIsMobile(query = "(max-width: 768px)") {
-  const [isMobile, setIsMobile] = useState(
-    () => window.matchMedia(query).matches
+function useIsMobile(query = "(max-width: 860px)") {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.matchMedia(query).matches : false
   );
+
   useEffect(() => {
     const mq = window.matchMedia(query);
     const onChange = (e) => setIsMobile(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+
+    setIsMobile(mq.matches);
+
+    if (mq.addEventListener) {
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    }
+    // older Safari
+    mq.addListener(onChange);
+    return () => mq.removeListener(onChange);
   }, [query]);
+
   return isMobile;
 }
 
@@ -36,22 +38,21 @@ export default function AuthLayout({ title, tagline, children }) {
 
   return (
     <div className="auth-shell">
-      <aside
-        className="auth-visual"
-        style={isMobile ? mobileSlot : desktopSlot}
-      >
-        {isMobile ? (
-          <>
-            <AuthVisual />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <h2 style={{ margin: 0 }}>{title}</h2>
-              <p style={{ margin: "6px 0 0" }}>{tagline}</p>
+      {isMobile ? (
+        <aside className="auth-visual">
+          <AuthVisual />
+          <div className="auth-visual-content">
+            <div className="auth-visual-copy">
+              <h2>{title}</h2>
+              <p className="auth-visual-tagline">{tagline}</p>
             </div>
-          </>
-        ) : (
+          </div>
+        </aside>
+      ) : (
+        <aside className="auth-visual" style={visualSlotStyle}>
           <VoxelPanel title={title} subtitle={tagline} points={POINTS} />
-        )}
-      </aside>
+        </aside>
+      )}
       <main className="auth-form-side">
         <div className="auth-form-card">{children}</div>
       </main>
