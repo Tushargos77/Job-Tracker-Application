@@ -1,3 +1,4 @@
+
 /* ---------- Shell / layout ---------- */
 .app-shell {
   display: flex;
@@ -150,12 +151,15 @@
   background: var(--pine);
   color: #fff;
 }
+
 .btn-accent:hover {
   background: var(--pine-dark);
 }
+
 .btn-accent:active {
   transform: translateY(1px);
 }
+
 .btn-accent:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -166,6 +170,7 @@
   border-color: var(--border-strong);
   color: var(--ink);
 }
+
 .btn-secondary:hover {
   background: var(--paper);
 }
@@ -174,9 +179,11 @@
   background: var(--red);
   color: #fff;
 }
+
 .btn-danger:hover {
   background: var(--red-dark, #a53c2f);
 }
+
 .btn-danger:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -189,10 +196,12 @@
   padding: 6px 10px;
   font-size: 12.5px;
 }
+
 .btn-ghost:hover {
   border-color: var(--border-strong);
   color: var(--ink);
 }
+
 .btn-ghost-danger:hover {
   border-color: var(--red);
   color: var(--red);
@@ -208,6 +217,7 @@
   display: grid;
   place-items: center;
 }
+
 .icon-btn:hover {
   background: var(--paper);
   color: var(--ink);
@@ -355,7 +365,7 @@
   margin-top: 16px;
 }
 
-/* Status badge */
+/* ---------- Status badge ---------- */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -374,7 +384,7 @@
   border-radius: 50%;
 }
 
-/* Pipeline rail — signature element */
+/* ---------- Pipeline rail ---------- */
 .rail {
   display: flex;
   align-items: center;
@@ -435,7 +445,12 @@
 
 .skeleton {
   display: inline-block;
-  background: linear-gradient(90deg, var(--border) 25%, var(--paper) 50%, var(--border) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--border) 25%,
+    var(--paper) 50%,
+    var(--border) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
   border-radius: 4px;
@@ -464,6 +479,7 @@
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -584,6 +600,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -594,6 +611,7 @@
     opacity: 0;
     transform: translateY(6px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -677,11 +695,12 @@
   color: var(--ink-faint);
 }
 
-/* ---------- Responsive ---------- */
+/* ---------- Responsive dashboard ---------- */
 @media (max-width: 880px) {
   .app-shell {
     flex-direction: column;
   }
+
   .sidebar {
     width: 100%;
     height: auto;
@@ -692,26 +711,33 @@
     gap: 16px;
     overflow-x: auto;
   }
+
   .sidebar-brand {
     padding: 0;
   }
+
   .sidebar-add {
     width: auto;
     margin-bottom: 0;
   }
+
   .sidebar-nav {
     flex-direction: row;
   }
+
   .sidebar-theme {
     margin-top: 0;
     margin-left: auto;
   }
+
   .app-main {
     padding: 20px 16px 40px;
   }
+
   .stat-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .bar-row {
     grid-template-columns: 70px 1fr 28px;
   }
@@ -721,12 +747,13 @@
   .stat-grid {
     grid-template-columns: 1fr 1fr;
   }
+
   .job-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* ---------- Auth pages (split-screen) ---------- */
+/* ---------- Auth pages ---------- */
 .auth-shell {
   display: flex;
   min-height: 100vh;
@@ -736,7 +763,12 @@
   position: relative;
   flex: 0 0 42%;
   min-width: 360px;
-  background: linear-gradient(155deg, var(--pine-dark) 0%, var(--pine) 55%, var(--amber) 130%);
+  background: linear-gradient(
+    155deg,
+    var(--pine-dark) 0%,
+    var(--pine) 55%,
+    var(--amber) 130%
+  );
   color: #fff;
   padding: 48px 44px;
   display: flex;
@@ -995,23 +1027,44 @@
   color: var(--ink);
 }
 
+/* ---------- Mobile auth adjustment ---------- */
 @media (max-width: 860px) {
   .auth-shell {
-    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100svh;
+    align-items: center;
+    justify-content: center;
   }
+
   .auth-visual {
     flex: none;
     min-width: 0;
     padding: 32px 24px;
   }
+
   .auth-visual-copy h2 {
     font-size: 26px;
   }
+
   .auth-visual-points {
     display: none;
   }
+
   .auth-form-side {
-    padding: 32px 20px 48px;
+    flex: 1;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 24px 20px;
+    background: transparent;
+  }
+
+  .auth-form-card {
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    background: rgba(30, 30, 40, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
   }
 }
 
@@ -1043,9 +1096,11 @@
 .toast-success svg {
   color: #6fd19c;
 }
+
 .toast-error svg {
   color: #f0897a;
 }
+
 .toast-info svg {
   color: #8fb8f0;
 }
@@ -1060,6 +1115,7 @@
   display: grid;
   place-items: center;
 }
+
 .toast-close:hover {
   opacity: 1;
 }
@@ -1069,11 +1125,13 @@
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .auth-divider {
   display: flex;
   align-items: center;
@@ -1098,6 +1156,7 @@
   display: flex;
   justify-content: center;
 }
+
 .job-interview-tag {
   display: inline-flex;
   align-items: center;
