@@ -121,4 +121,4 @@ Frontend on Vercel, backend on Render, database on Neon. Set the environment var
 
 **Tushar Prasad Goswami**, B.Tech Electronics and Communication Engineering
 
-[GitHub](https://github.com/Tushargos77) · [LinkedIn](https://www.linkedin.com/in/tushar-goswami-164334278)
+[GitHub](https://github.com/Tushargos77) · [LinkedIn](https://www.linkedin.com/in/tushar-prasad-goswami-164334278/)
